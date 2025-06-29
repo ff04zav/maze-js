@@ -1,4 +1,42 @@
-// Game Configuration
+var MAZE;
+const PLAYER_START = { row: 1, col: 1 };
+var GOAL;
+
+let playerPos = { ...PLAYER_START };
+let gameWon = false;
+
+// Initialize Game
+function initGame() {
+  MAZE = generateMaze(13, 9);
+  GOAL = findFarthestCell(MAZE, PLAYER_START);
+  const cols = MAZE[0].length;
+  const container = document.getElementById("maze-container");
+  container.innerHTML = "";
+  container.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
+
+  // Generate Maze Grid
+  for (let row = 0; row < MAZE.length; row++) {
+    for (let col = 0; col < MAZE[0].length; col++) {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.id = `cell-${row}-${col}`;
+
+      if (MAZE[row][col] === 1) {
+        cell.classList.add("wall");
+      } else if (row === GOAL.row && col === GOAL.col) {
+        const goal = document.createElement("div");
+        goal.className = "goal";
+        cell.appendChild(goal);
+      }
+
+      container.appendChild(cell);
+    }
+  }
+
+  // Place Player
+  updatePlayerPosition();
+}
+
 function generateMaze(width, height) {
   // Initialize maze with all walls (1)
   let maze = Array(height)
@@ -83,45 +121,6 @@ function findFarthestCell(maze, playerStart) {
   // Pick the bottom-leftmost cell among farthest positions
   farthestCells.sort((a, b) => b.row - a.row || a.col - b.col);
   return farthestCells[0];
-}
-
-var MAZE;
-const PLAYER_START = { row: 1, col: 1 };
-var GOAL;
-
-let playerPos = { ...PLAYER_START };
-let gameWon = false;
-
-// Initialize Game
-function initGame() {
-  MAZE = generateMaze(15, 11);
-  GOAL = findFarthestCell(MAZE, PLAYER_START);
-  const cols = MAZE[0].length;
-  const container = document.getElementById("maze-container");
-  container.innerHTML = "";
-  container.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
-
-  // Generate Maze Grid
-  for (let row = 0; row < MAZE.length; row++) {
-    for (let col = 0; col < MAZE[0].length; col++) {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      cell.id = `cell-${row}-${col}`;
-
-      if (MAZE[row][col] === 1) {
-        cell.classList.add("wall");
-      } else if (row === GOAL.row && col === GOAL.col) {
-        const goal = document.createElement("div");
-        goal.className = "goal";
-        cell.appendChild(goal);
-      }
-
-      container.appendChild(cell);
-    }
-  }
-
-  // Place Player
-  updatePlayerPosition();
 }
 
 // Move Player with Arrow Keys
