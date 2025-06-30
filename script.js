@@ -26,6 +26,9 @@ function initGame() {
       } else if (row === GOAL.row && col === GOAL.col) {
         const goal = document.createElement("div");
         goal.className = "goal";
+        goal.innerHTML = `
+  <img src="images/door.svg" alt="Door" width="24" height="24">
+  `;
         cell.appendChild(goal);
       }
 
@@ -183,6 +186,9 @@ function updatePlayerPosition() {
   );
   const playerEl = document.createElement("div");
   playerEl.className = "player";
+  playerEl.innerHTML = `
+  <img src="images/character.svg" alt="Player character" width="24" height="24">
+  `;
   playerCell.appendChild(playerEl);
 }
 
